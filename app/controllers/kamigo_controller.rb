@@ -35,30 +35,30 @@ class KamigoController < ApplicationController
 
     def eat
         render plain: "吃土啦"
-      end 
+    end 
     
-      def request_headers
+    def request_headers
         render plain: request.headers.to_h.reject{ |key, value|
           key.include? '.'
         }.map{ |key, value|
           "#{key}: #{value}"
         }.sort.join("\n")
-      end
+    end
     
-      def response_headers
+    def response_headers
         response.headers['5566'] = 'QQ'
         render plain: response.headers.to_h.map{ |key, value|
           "#{key}: #{value}"
         }.sort.join("\n")
-      end
+    end
     
-      def request_body
+    def request_body
         render plain: request.body
-      end
+    end
     
-      def show_response_body
+    def show_response_body
         puts "===這是設定前的response.body:#{response.body}==="
         render plain: "虎哇花哈哈哈"
         puts "===這是設定後的response.body:#{response.body}==="
-      end
+    end
 end
