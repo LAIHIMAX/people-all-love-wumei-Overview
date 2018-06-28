@@ -11,6 +11,9 @@ class KamigoController < ApplicationController
   
         # 取得 reply token
         reply_token = params['events'][0]['replyToken']
+        p "==這裡是replay_token==="
+        p reply_token
+        p "======================"
 
         # 設定回覆訊息
         message = {
