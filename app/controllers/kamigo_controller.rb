@@ -69,7 +69,7 @@ class KamigoController < ApplicationController
         keyword = received_text[0..semicolon_index-1]
         message = received_text[semicolon_index+1..-1]
 
-        KeywordMapping.create(keyword: keyword, message:message)
+        KeywordMapping.create(channel_id: channel_id, keyword: keyword, message:message)
         '好喔~好喔~'
     end
     
