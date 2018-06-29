@@ -7,11 +7,29 @@ class KamigoController < ApplicationController
         # 設定回覆文字
         reply_text = keyword_reply(received_text)
 
-         # 傳送訊息到 line
-         response = reply_to_line(reply_text)
+        # 傳送訊息到 line
+        response = reply_to_line(reply_text)
      
          # 回應 200
          head :ok
+    end
+
+    #取得對方說的話
+    def received_text
+        params['events'][0]['message']['text']
+        message['text'] unless message.nil?
+    end
+    
+    #關鍵字回覆
+    def keyword_reply(received_text)
+        # 學習紀錄表
+        keyword_mapping = {
+            'QQ' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s',
+            '我難過' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s'
+        }
+    
+        #查表
+        keyword_mapping[received_text]
     end
 
     # Line Bot API初始化物件
@@ -25,6 +43,8 @@ class KamigoController < ApplicationController
 
     #傳送訊息到line
     def reply_to_line(reply_text)
+        return nil if reply_text.nil?
+
         # 取得 reply token
         reply_token = params['events'][0]['replyToken']
 
@@ -36,15 +56,5 @@ class KamigoController < ApplicationController
         
         # 傳送訊息
         line.reply_message(reply_token, message)        
-    end
-
-    #取得對方說的話
-    def received_text
-        params['events'][0]['message']['text']
-    end
-
-    #關鍵字回覆
-    def keyword_reply(received_text)
-        received_text
     end
 end
