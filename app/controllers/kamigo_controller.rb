@@ -8,7 +8,7 @@ class KamigoController < ApplicationController
         reply_text = learn(received_text)
 
         # 關鍵字回覆
-        reply_text = keyword_reply(received_text) if received_text.nil?
+        reply_text = keyword_reply(received_text) if reply_text.nil?
 
         # 傳送訊息到 line
         response = reply_to_line(reply_text)
