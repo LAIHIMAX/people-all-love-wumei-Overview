@@ -74,7 +74,7 @@ class KamigoController < ApplicationController
     end
     
     #關鍵字回覆
-    def keyword_reply(received_text)
+    def keyword_reply(channel_id, received_text)
         mapping = KeywordMapping.where(channel_id: channel_id, keyword: received_text).last
         if mapping.nil?
             nil
