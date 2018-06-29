@@ -31,13 +31,13 @@ class KamigoController < ApplicationController
         keyword = received_text[0..semicolon_index-1]
         message = received_text[semicolon_index+1..-1]
 
-        keywordMapping.create(keyword: keyword, message:message)
+        KeywordMapping.create(keyword: keyword, message:message)
         '好喔~好喔~'
     end
     
     #關鍵字回覆
     def keyword_reply(received_text)
-        mapping = keywordMapping.where(keyword: received_text).last
+        mapping = KeywordMapping.where(keyword: received_text).last
         if mapping.nil?
             nil
         else
