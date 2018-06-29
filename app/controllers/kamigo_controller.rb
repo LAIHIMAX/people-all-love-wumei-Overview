@@ -4,8 +4,11 @@ class KamigoController < ApplicationController
     protect_from_forgery with: :null_session
 
     def webhook
-        # 設定回覆文字
-        reply_text = keyword_reply(received_text)
+        # 學說話
+        reply_text = learn(received_text)
+
+        # 關鍵字回覆
+        reply_text = keyword_reply(received_text) if received_text.nil?
 
         # 傳送訊息到 line
         response = reply_to_line(reply_text)
@@ -14,22 +17,38 @@ class KamigoController < ApplicationController
          head :ok
     end
 
-    #取得對方說的話
-    def received_text
-        message = params['events'][0]['message']
-        message['text'] unless message.nil?
+    # 學說話
+    def learn(received_text)
+        # 如果開頭不是 烏梅學說話; 就跳出
+        return nil unless received_text[0..5] == '烏梅學說話;'
+
+        received_text = received_text[6..-1]
+        semicolon_index = received_text.index(';')
+
+        # 找不到分號就跳出
+        return nil if semicolon_index.nil?
+
+        keyword = received_text[0..semicolon_index-1]
+        message = received_text[semicolon_index+1..-1]
+
+        keywordMapping.create(keyword: keyword, message:message)
+        '好喔~好喔~'
     end
     
     #關鍵字回覆
     def keyword_reply(received_text)
-        # 學習紀錄表
-        keyword_mapping = {
-            'QQ' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s',
-            '我難過' => '神曲支援：https://www.youtube.com/watch?v=T0LfHEwEXXw&feature=youtu.be&t=1m13s'
-        }
-    
-        #查表
-        keyword_mapping[received_text]
+        mapping = keywordMapping.where(keyword: received_text).last
+        if mapping.nil?
+            nil
+        else
+            mapping.message
+        end        
+    end
+
+    #取得對方說的話
+    def received_text
+        message = params['events'][0]['message']
+        message['text'] unless message.nil?
     end
 
     # Line Bot API初始化物件
