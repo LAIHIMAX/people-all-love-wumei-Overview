@@ -12,6 +12,8 @@ class KamigoController < ApplicationController
 
         # 推齊
         reoly_text = echo2(channel_id, received_text) if reply_text.nil?
+
+        # 紀錄對話
         save_to_received(channel_id, received_text)
         save_to_reply(channel_id, reply_text)
 
@@ -26,7 +28,7 @@ class KamigoController < ApplicationController
     def channel_id
         source = params['events'][0]['source']
         return source['groupId'] unless source['groupId'].nil?
-        return source['rommId'] unless source['roomId'].nil?
+        return source['roomId'] unless source['roomId'].nil?
         source['userId']
     end
 
