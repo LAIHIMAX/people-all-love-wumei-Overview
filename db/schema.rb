@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_29_170419) do
+ActiveRecord::Schema.define(version: 2018_07_03_144155) do
 
   create_table "keyword_mappings", force: :cascade do |t|
     t.string "keyword"
