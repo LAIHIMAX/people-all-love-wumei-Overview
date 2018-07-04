@@ -4,8 +4,11 @@ class KamigoController < ApplicationController
     protect_from_forgery with: :null_session
 
     def webhook
+        # 紀錄頻道
+        Channel.find_or_creat_by(channel_id: channel_id)
+
         # 學說話
-        reply_text = learn(received_text)
+        reply_text = learn(channel_id, received_text)
 
         # 關鍵字回覆
         reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
