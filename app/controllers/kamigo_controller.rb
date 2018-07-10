@@ -61,7 +61,7 @@ class KamigoController < ApplicationController
         request = Net::HTTP::Post.new(url)
         request["authorization"] = 'Client-ID 632fbbed25e2e91'
 
-        request.set_from_data({"image" => image_url})
+        request.set_form_data({"image" => image_url})
         response = http.request(request)
         json = JSON.parse(response.read_body)
         begin
