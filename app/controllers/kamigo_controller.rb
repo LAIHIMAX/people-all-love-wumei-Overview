@@ -123,10 +123,10 @@ class KamigoController < ApplicationController
     # 學說話
     def learn(channel_id, received_text)
         # 如果開頭不是 烏梅學說話; 就跳出
-        return nil unless received_text[0..5] == '烏梅學說話;'
+        return nil unless received_text[0..5] == '烏梅學說話 '
 
         received_text = received_text[6..-1]
-        semicolon_index = received_text.index(';')
+        semicolon_index = received_text.index('=')
 
         # 找不到分號就跳出
         return nil if semicolon_index.nil?
