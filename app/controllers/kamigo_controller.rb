@@ -24,6 +24,8 @@ class KamigoController < ApplicationController
         
         # 覆寫說話
         reply_text = overwrite(channel_id, received_text)        
+        # 忘記說話
+        reply_text = deleteKeyWord(channel_id, received_text)        
 
         # 關鍵字回覆
         reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
@@ -153,6 +155,19 @@ class KamigoController < ApplicationController
         keyword.message = message
         keyword.save   
         '好喔~好喔~'     
+    end
+
+    def deleteKeyWord(channel_id, received_text)
+        return nil unless received_text[0..4] == '烏梅忘記 '
+        received_text = received_text[5..-1]
+        semicolon_index = received_text.index('=')
+        # 找不到等號就跳出
+        return nil if semicolon_index.nil?
+        keyword = received_text[0..semicolon_index-1]
+        message = received_text[semicolon_index+1..-1]
+        keyword = KeywordMapping.find_by(channel_id:channel_id, keyword:keyword)        
+        keyword.destroy
+        '好喔~好喔~' 
     end
     
     #關鍵字回覆
