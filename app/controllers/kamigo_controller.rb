@@ -21,11 +21,10 @@ class KamigoController < ApplicationController
 
         # 學說話
         reply_text = learn(channel_id, received_text)
-        
         # 覆寫說話
-        reply_text = overwrite(channel_id, received_text)        
+        reply_text = overwrite(channel_id, received_text) if reply_text.nil?   
         # 忘記說話
-        reply_text = deleteKeyWord(channel_id, received_text)        
+        reply_text = deleteKeyWord(channel_id, received_text) if reply_text.nil?       
 
         # 關鍵字回覆
         reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
@@ -143,6 +142,7 @@ class KamigoController < ApplicationController
         '好喔~好喔~'
     end
 
+     # 覆寫學說話
     def overwrite(channel_id, received_text)
         return nil unless received_text[0..4] == '烏梅覆寫 '
         received_text = received_text[5..-1]
@@ -157,6 +157,7 @@ class KamigoController < ApplicationController
         '好喔~好喔~'     
     end
 
+    # 忘記學說話
     def deleteKeyWord(channel_id, received_text)
         return nil unless received_text[0..4] == '烏梅忘記 '
         received_text = received_text[5..-1]
