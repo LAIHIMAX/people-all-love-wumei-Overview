@@ -21,6 +21,9 @@ class KamigoController < ApplicationController
 
         # 學說話
         reply_text = learn(channel_id, received_text)
+        
+        # 覆寫說話
+        reply_text = overwrite(channel_id, received_text)        
 
         # 關鍵字回覆
         reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
@@ -128,7 +131,7 @@ class KamigoController < ApplicationController
         received_text = received_text[6..-1]
         semicolon_index = received_text.index('=')
 
-        # 找不到分號就跳出
+        # 找不到等號就跳出
         return nil if semicolon_index.nil?
 
         keyword = received_text[0..semicolon_index-1]
@@ -136,6 +139,19 @@ class KamigoController < ApplicationController
 
         KeywordMapping.create(channel_id: channel_id, keyword: keyword, message:message)
         '好喔~好喔~'
+    end
+
+    def overwrite(channel_id, received_text)
+        return nil unless received_text[0..4] == '烏梅覆寫 '
+        received_text = received_text[5..-1]
+        semicolon_index = received_text.index('=')
+        # 找不到等號就跳出
+        return nil if semicolon_index.nil?
+        keyword = received_text[0..semicolon_index-1]
+        message = received_text[semicolon_index+1..-1]
+        keyword = KeywordMapping.find_by(channel_id:channel_id, keyword:keyword)
+        keyword.message = message
+        keyword.save        
     end
     
     #關鍵字回覆
