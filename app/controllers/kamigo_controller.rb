@@ -46,11 +46,11 @@ class KamigoController < ApplicationController
 
     # 取得最新雷達回波圖
     def get_weather_from_cwb
-        uri = URI('http://www.cwb.gov.tw/V7/js/HDRadar_1000_n_val.js')
+        uri = URI('https://www.cwb.gov.tw/V7/js/HDRadar_1000_n_val.js')
         response = Net::HTTP.get(uri)
         start_index = response.index('","') + 3
         end_index = response.index('"),') - 1
-        "http://www.cwb.gov.tw" + response[start_index..end_index]
+        "https://www.cwb.gov.tw" + response[start_index..end_index]
     end
 
     # 上傳圖片到 imgur 
