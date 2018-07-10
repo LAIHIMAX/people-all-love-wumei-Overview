@@ -151,7 +151,8 @@ class KamigoController < ApplicationController
         message = received_text[semicolon_index+1..-1]
         keyword = KeywordMapping.find_by(channel_id:channel_id, keyword:keyword)
         keyword.message = message
-        keyword.save        
+        keyword.save   
+        '好喔~好喔~'     
     end
     
     #關鍵字回覆
