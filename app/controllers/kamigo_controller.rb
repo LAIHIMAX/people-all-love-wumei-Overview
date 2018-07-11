@@ -188,7 +188,7 @@ class KamigoController < ApplicationController
         # 找不到等號就跳出
         return nil if keyword.nil?
         keyword = KeywordMapping.find_by(channel_id:channel_id, keyword:keyword)          
-        "#{keyword} == #{keyword.message}"
+        "#{keyword.keyword} == #{keyword.message}"
     end
     
     #關鍵字回覆
