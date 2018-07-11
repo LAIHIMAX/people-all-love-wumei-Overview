@@ -1,24 +1,21 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+我的第一隻LineBot
+將一些常用的語法放上來
 
-Things you may want to cover:
+* Heroku下SQL指令
+heroku run rails console
 
-* Ruby version
+* 上Git
+git add .
+git commit -m "管理後台"
+git push heroku master
 
-* System dependencies
+*  Heroku 上的資料庫遷移
+heroku run rake db:migrate
 
-* Configuration
+*  Heroku 上檢查資料庫
+rails db:migrate:status
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Heroku 看log
+heroku logs -t 
