@@ -4,6 +4,14 @@ class KamigoController < ApplicationController
     protect_from_forgery with: :null_session
 
     def webhook
+        # 簽名驗證
+        body = request.body.read
+        signature = request.env['HTTP_X_LINE_SIGNATURE']
+        unless line.validate_signature(body, signature)
+            render plain: 'Bad Request', status: 400
+            return
+        end
+
         # 查天氣
         reply_image = get_weather(received_text)
 
