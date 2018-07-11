@@ -33,6 +33,8 @@ class KamigoController < ApplicationController
         reply_text = overwrite(channel_id, received_text) if reply_text.nil?   
         # 忘記說話
         reply_text = deleteKeyWord(channel_id, received_text) if reply_text.nil?       
+        # 查詢關鍵字
+        reply_text = searchKeyWord(channel_id, received_text) if reply_text.nil?       
 
         # 關鍵字回覆
         reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
@@ -177,6 +179,16 @@ class KamigoController < ApplicationController
         keyword = KeywordMapping.find_by(channel_id:channel_id, keyword:keyword)        
         keyword.destroy
         '好喔~好喔~' 
+    end
+
+    # 查詢關鍵字
+    def searchKeyWord(channel_id, received_text)
+        return nil unless received_text[0..4] == '烏梅查詢 '
+        keyword = received_text[5..-1]
+        # 找不到等號就跳出
+        return nil if keyword.nil?
+        keyword = KeywordMapping.find_by(channel_id:channel_id, keyword:keyword)  
+        keyword.message
     end
     
     #關鍵字回覆
