@@ -29,12 +29,6 @@ class KamigoController < ApplicationController
 
         # 學說話
         reply_text = learn(channel_id, received_text)
-        
-        # 推齊
-        reoly_text = echo2(channel_id, received_text) if reply_text.nil?
-        # 紀錄對話
-        save_to_received(channel_id, received_text)
-        save_to_reply(channel_id, reply_text)
 
         # 覆寫說話
         reply_text = overwrite(channel_id, received_text) if reply_text.nil?   
@@ -45,7 +39,11 @@ class KamigoController < ApplicationController
         # 關鍵字回覆
         reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
 
-        
+        # 推齊
+        reply_text = echo2(channel_id, received_text) if reply_text.nil?
+        # 紀錄對話
+        save_to_received(channel_id, received_text)
+        save_to_reply(channel_id, reply_text)
 
         # 傳送訊息到 line
         response = reply_to_line(reply_text)
