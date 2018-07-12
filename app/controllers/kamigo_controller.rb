@@ -29,22 +29,23 @@ class KamigoController < ApplicationController
 
         # 學說話
         reply_text = learn(channel_id, received_text)
+        
+        # 推齊
+        reoly_text = echo2(channel_id, received_text) if reply_text.nil?
+        # 紀錄對話
+        save_to_received(channel_id, received_text)
+        save_to_reply(channel_id, reply_text)
+        
         # 覆寫說話
         reply_text = overwrite(channel_id, received_text) if reply_text.nil?   
         # 忘記說話
         reply_text = deleteKeyWord(channel_id, received_text) if reply_text.nil?       
         # 查詢關鍵字
         reply_text = searchKeyWord(channel_id, received_text) if reply_text.nil?       
-
         # 關鍵字回覆
         reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
 
-        # 推齊
-        reoly_text = echo2(channel_id, received_text) if reply_text.nil?
-
-        # 紀錄對話
-        save_to_received(channel_id, received_text)
-        save_to_reply(channel_id, reply_text)
+        
 
         # 傳送訊息到 line
         response = reply_to_line(reply_text)
@@ -202,9 +203,9 @@ class KamigoController < ApplicationController
     end
 
     #取得對方說的話
-    def received_text
+    def received_text(event)
         message = params['events'][0]['message']
-        message['text'] unless message.nil?
+        message['text'] unless message.nil?       
     end
 
     # Line Bot API初始化物件
