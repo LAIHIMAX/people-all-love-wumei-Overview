@@ -35,7 +35,7 @@ class KamigoController < ApplicationController
         # 紀錄對話
         save_to_received(channel_id, received_text)
         save_to_reply(channel_id, reply_text)
-        
+
         # 覆寫說話
         reply_text = overwrite(channel_id, received_text) if reply_text.nil?   
         # 忘記說話
@@ -203,7 +203,7 @@ class KamigoController < ApplicationController
     end
 
     #取得對方說的話
-    def received_text(event)
+    def received_text
         message = params['events'][0]['message']
         message['text'] unless message.nil?       
     end
