@@ -24,7 +24,7 @@ class KamigoController < ApplicationController
             return
         end        
 
-        # 紀錄頻道
+        # 紀錄頻道 -發公告用途
         Channel.find_or_create_by(channel_id: channel_id)
 
         # 學說話
@@ -38,6 +38,8 @@ class KamigoController < ApplicationController
         reply_text = searchKeyWord(channel_id, received_text) if reply_text.nil?       
         # 關鍵字回覆
         reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
+
+        # 說笑話
 
         # 推齊
         reply_text = echo2(channel_id, received_text) if reply_text.nil?
@@ -190,6 +192,12 @@ class KamigoController < ApplicationController
         "#{keyword.keyword} == #{keyword.message}"
     end
     
+    # 說笑話
+    def joke(channel_id, received_text)
+        return nil unless received_text[0..5] == '烏梅說笑話'
+
+    end 
+       
     #關鍵字回覆
     def keyword_reply(channel_id, received_text)
         mapping = KeywordMapping.where(channel_id: channel_id, keyword: received_text).last
