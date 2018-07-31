@@ -40,7 +40,7 @@ class KamigoController < ApplicationController
         reply_text = keyword_reply(channel_id, received_text) if reply_text.nil?
 
         # 說笑話
-        reply_text = joke(received_text) if reply_text.nil?
+        reply_text = saysomething(received_text) if reply_text.nil?
 
         # 推齊
         reply_text = echo2(channel_id, received_text) if reply_text.nil?
@@ -193,12 +193,29 @@ class KamigoController < ApplicationController
         "#{keyword.keyword} == #{keyword.message}"
     end
     
+    def saysomething(received_text)
+        return nil unless received_text[0..2] == '烏梅說'
+        received_text = received_text[3..-1]
+        if received_text == '笑話'        
+            received_text = joke()
+        elseif received_text == '故事'            
+            received_text = '故事'
+        end
+        received_text
+    end
+
     # 說笑話
-    def joke(received_text)
-        return nil unless received_text[0..5] == '烏梅說笑話'
+    def joke()
         joke = Joke.offset(rand(Joke.count)).first
         joke.content
     end 
+
+    # 說故事
+    def store(received_text)
+        return nil unless received_text[0..4] == '烏梅說故事'
+        joke = Joke.offset(rand(Joke.count)).first
+        joke.content
+    end
        
     #關鍵字回覆
     def keyword_reply(channel_id, received_text)
