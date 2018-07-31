@@ -195,13 +195,12 @@ class KamigoController < ApplicationController
     
     def saysomething(received_text)
         return nil unless received_text[0..2] == '烏梅說'
-        received_text = received_text[3..-1]
-        if received_text == '笑話'        
+        received = received_text[3..-1]
+        if received == '笑話'        
             received_text = joke(received_text)
-        elseif received_text == '故事'            
+        elseif received == '故事'            
             received_text = '故事'
         end
-        received_text
     end
 
     # 說笑話
