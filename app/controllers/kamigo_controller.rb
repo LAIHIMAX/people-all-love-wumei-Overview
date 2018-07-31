@@ -211,8 +211,7 @@ class KamigoController < ApplicationController
     end 
 
     # 說故事
-    def store(received_text)
-        return nil unless received_text[0..4] == '烏梅說故事'
+    def store(received_text)        
         joke = Joke.offset(rand(Joke.count)).first
         joke.content
     end
