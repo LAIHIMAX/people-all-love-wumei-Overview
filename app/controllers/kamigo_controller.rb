@@ -197,7 +197,7 @@ class KamigoController < ApplicationController
         return nil unless received_text[0..2] == '烏梅說'
         received_text = received_text[3..-1]
         if received_text == '笑話'        
-            received_text = joke()
+            received_text = joke(received_text)
         elseif received_text == '故事'            
             received_text = '故事'
         end
@@ -205,7 +205,7 @@ class KamigoController < ApplicationController
     end
 
     # 說笑話
-    def joke()
+    def joke(received_text)
         joke = Joke.offset(rand(Joke.count)).first
         joke.content
     end 
